@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autocomplete Search Form</title>
+</head>
+<body>
+    <h1>Autocomplete Search Form</h1>
+    <form action="#" method="get">
+        <label for="search">Search:</label>
+        <input type="search" id="search" name="search" list="search-terms" autocomplete="on">
+        <datalist id="search-terms">
+            <!-- Previous search terms will be stored by the browser -->
+        </datalist>
+        <button type="submit">Submit</button>
+        <button type="reset" id="reset">Reset</button>
+    </form>
+    <script>
+        const searchInput = document.getElementById('search');
+        const dataList = document.getElementById('search-terms');
+
+        // Load previous search terms from localStorage
+        const previousSearches = JSON.parse(localStorage.getItem('searchTerms')) || [];
+        previousSearches.forEach(term => {
+            const option = document.createElement('option');
+            option.value = term;
+            dataList.appendChild(option);
+        });
+
+        // Save new search term on form submit
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm && !previousSearches.includes(searchTerm)) {
+            previousSearches.push(searchTerm);
+            localStorage.setItem('searchTerms', JSON.stringify(previousSearches));
+            const option = document.createElement('option');
+            option.value = searchTerm;
+            dataList.appendChild(option);
+            }
+        });
+
+        // Clear search terms on reset
+        document.querySelector('form').addEventListener('reset', function() {
+            localStorage.removeItem('searchTerms');
+            while (dataList.firstChild) {
+            dataList.removeChild(dataList.firstChild);
+            }
+        });
+    </script>
+</body>
+</html>
