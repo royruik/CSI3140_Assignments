@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Sales</title>
+    <script>
+        function calculateSales() {
+            const prices = {
+                1: 2.98,
+                2: 4.50,
+                3: 9.98,
+                4: 4.49,
+                5: 6.87
+            };
+
+            let sales = {
+                1: 0,
+                2: 0,
+                3: 0,
+                4: 0,
+                5: 0
+            };
+
+            while (true) {
+                let productNumber = prompt("Enter product number (1-5) or -1 to finish:");
+                if (productNumber == -1) break;
+
+                productNumber = parseInt(productNumber);
+                if (productNumber < 1 || productNumber > 5) {
+                    alert("Invalid product number. Please enter a number between 1 and 5.");
+                    continue;
+                }
+
+                let quantitySold = prompt("Enter quantity sold:");
+                quantitySold = parseInt(quantitySold);
+
+                switch (productNumber) {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                        sales[productNumber] += prices[productNumber] * quantitySold;
+                        break;
+                    default:
+                        alert("Invalid product number.");
+                }
+            }
+
+            let resultTable = "<table border='1'><tr><th>Product Number</th><th>Total Sales ($)</th></tr>";
+            for (let product in sales) {
+                resultTable += `<tr><td>${product}</td><td>${sales[product].toFixed(2)}</td></tr>`;
+            }
+            resultTable += "</table>";
+
+            document.getElementById("results").innerHTML = resultTable;
+        }
+    </script>
+</head>
+<body>
+    <h1>Product Sales Calculator</h1>
+    <button onclick="calculateSales()">Calculate Sales</button>
+    <div id="results"></div>
+</body>
+</html>
